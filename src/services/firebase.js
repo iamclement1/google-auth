@@ -1,6 +1,6 @@
-import * as firebase from "firebase/app";
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics'
+import { getApp, getApps, initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 //here is the firebase configuration 
 const firebaseConfig = {
@@ -14,9 +14,12 @@ const firebaseConfig = {
 };
 
 //initialize firebase;
+//initialze app only if there is no app else app will be initialized everytime there is a refresh to avoid that 
+// get the app length, if app length is greater zero then app information else initialize the new app
+const app = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firestore = getFirestore(app);
 
-export { app, analytics };
-export default firebase;
+const storage = getStorage(app);
+
+export { app, firestore, storage}
